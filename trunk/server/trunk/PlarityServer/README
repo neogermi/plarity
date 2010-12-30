@@ -4,7 +4,7 @@ ant
 
 Start PlarityServer (with standard settings):
 
-ant start
+java -cp bin:`echo lib/*.jar | tr " " ":"` org.plarity.server.Main -n plarity.db -p 8889 -msh smtp.example.com -msp 25 -ma you@example.com -mu username -mp mail_pw
 
 Test PlarityServer:
 
