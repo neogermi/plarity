@@ -1,0 +1,19 @@
+Compile PlarityServer:
+
+ant
+
+Start PlarityServer (with standard settings):
+
+ant start
+
+Test PlarityServer:
+
+curl -i -XPOST -H "Content-Type:application/json" http://localhost:8889/register
+
+	"Should return:
+		HTTP/1.1 200 OK
+		server: grizzly/1.9.18
+		Content-Type: text/plain
+		Content-Length: 0
+		Date: Thu, 30 Dec 2010 15:32:33 GMT"
+		
