@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.plarity.server.database.IDatabase;
+import org.plarity.server.mail.Mail;
 import org.plarity.server.util.Util;
 
 public class UserCenter {
@@ -14,9 +15,11 @@ public class UserCenter {
 	private final static Logger LOGGER = Logger.getLogger(UserCenter.class.getName());
 
 	private final IDatabase db;
+	private final Mail mail;
 
-	public UserCenter(IDatabase db) {
+	public UserCenter(IDatabase db, Mail mail) {
 		this.db = db;
+		this.mail = mail;
 	}
 
 	/**
@@ -27,6 +30,7 @@ public class UserCenter {
 	 */
 	public boolean registerUser(String email, String name) {
 		if (userExists(email, name)) {
+			LOGGER.info("Sorry, user/email already exists in system: email='" + email + "', name='" + name + "'");
 			return false;
 		} else {
 			// user is not known in the system
@@ -46,6 +50,7 @@ public class UserCenter {
 				if (res == 1) {
 					// -> send email for authentification
 					//TODO: send email to user with temp pw!
+					sendActivationEmail(email, name);
 					return true;
 				} else {
 					System.err.println("Something went wrong while executing SQL statement: '" + prep.toString() + "'");
@@ -75,6 +80,12 @@ public class UserCenter {
 			LOGGER.log(Level.WARNING, "Could not check if user exists: email='" + email + "', name='" + name + "'");
 			return true;
 		}
+	}
+
+	private boolean sendActivationEmail(String email, String name) {
+		//TODO: meaningful message!
+		return mail.sendMail(email, "Activate your plarity account", "TODO");
+
 	}
 
 }
