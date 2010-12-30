@@ -2,8 +2,10 @@ package org.plarity.server.user;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.plarity.server.util.Util;
 
@@ -26,12 +28,17 @@ public class UserCenter extends Thread {
 	public void run() {
 		System.out.println("Starting database access!");
 		try {
-			System.out.println(dbServer + " " + dbName + " " + dbUser + " " + dbPass);
-			conn = DriverManager.getConnection("jdbc:mysql://" + dbServer + "/" + dbName, dbUser, dbPass);
+			Class.forName("org.sqlite.JDBC");
+			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+			Statement stat = conn.createStatement();
+			stat.executeUpdate("DROP TABLE IF EXISTS `user`");
+			stat.executeUpdate("CREATE TABLE `user` (email TEXT, name TEXT, pw_hash TEXT);");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Database ready to roll!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("Database ready!");
 	}
 
 	public boolean registerUser(String email, String name) {
@@ -46,13 +53,18 @@ public class UserCenter extends Thread {
 			String pwHash = Util.md5Sum(pw);
 
 			try {
-				String stmt = "INSERT INTO user (email, name, pw_hash) VALUES (" + email + ", " + name + ", " + pwHash
-						+ ")";
-				boolean res = conn.createStatement().execute(stmt);
-				if (res) {
+				PreparedStatement prep = conn.prepareStatement("INSERT INTO `user` VALUES (?, ?, ?);");
+
+				prep.setString(1, email);
+				prep.setString(2, name);
+				prep.setString(3, pwHash);
+
+				int res = prep.executeUpdate();
+				if (res == 1) {
 					//TODO: send email to user with temp pw!
+					return true;
 				} else {
-					System.err.println("Something went wrong while executing SQL statement: '" + stmt + "'");
+					System.err.println("Something went wrong while executing SQL statement: '" + prep.toString() + "'");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -62,11 +74,12 @@ public class UserCenter extends Thread {
 	}
 
 	private boolean userExists(String email, String name) {
-		String stmt = "SELECT `id` FROM `user` WHERE `email`='" + email + "' OR `name`='" + name + "'";
+		String stmt = "SELECT * FROM `user` WHERE `email`='" + email + "' OR `name`='" + name + "'";
 		try {
 			//check if there exists a user with that email or name in database
 			ResultSet rs = conn.createStatement().executeQuery(stmt);
-			return !rs.first();
+
+			return rs.next();
 		} catch (SQLException e) {
 			System.err.println("ERROR: While executing SQL statement: '" + stmt + "'");
 			e.printStackTrace();
