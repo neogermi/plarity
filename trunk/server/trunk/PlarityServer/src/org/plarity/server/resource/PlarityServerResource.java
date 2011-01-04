@@ -7,7 +7,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -29,9 +28,10 @@ public class PlarityServerResource {
 		try {
 			JSONObject data = new JSONObject(content);
 			String email = data.getString("email");
-			String name = data.getString("name");
 
-			if (Main.userCenter.registerUser(email, name)) {
+			if (Main.userCenter.askForActivation(email)) {
+				//send activation email!
+				Main.mail.sendActivationEmail(email);
 				return Response.ok().build();
 			} else {
 				return Response.status(Status.CONFLICT).build();
@@ -48,11 +48,33 @@ public class PlarityServerResource {
 	}
 
 	@POST
+	@Consumes("application/json")
 	@Produces("text/plain")
-	@Path("/validate/{validate_id}")
-	public Response validateUser(@PathParam("validate_id") String validateId) {
-		//TODO
-		return Response.status(Status.NOT_FOUND).build();
+	@Path("/activate")
+	public Response activateUser(String content) {
+		try {
+			JSONObject data = new JSONObject(content);
+			String email = data.getString("email");
+			String hash = data.getString("hash");
+
+			if (Main.userCenter.isValidActivation(email, hash)) {
+				if (!Main.userCenter.removeActivation(email)) {
+					LOGGER.log(Level.WARNING, "Could not remove activation of user('" + email + "'). Please check!");
+				}
+				String tmpPw = Main.userCenter.initUser(email);
+				return Response.ok(tmpPw).build();
+			} else {
+				//invalid email/id combination
+				LOGGER.log(Level.WARNING, "Could not activate user, as '" + email + "'/'" + hash
+						+ "' (email/id) is not valid!");
+				return Response.status(Status.FORBIDDEN).build();
+			}
+		} catch (Throwable t) {
+			String warning = "Could not register user, not enough data provided OR wrong JSON format: '" + content
+					+ "'";
+			LOGGER.log(Level.WARNING, warning, t);
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(t.getLocalizedMessage()).build();
+		}
 	}
 
 	@GET

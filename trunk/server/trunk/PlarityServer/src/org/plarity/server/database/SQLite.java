@@ -29,6 +29,8 @@ public class SQLite implements IDatabase {
 			Statement stat = conn.createStatement();
 			stat.executeUpdate("DROP TABLE IF EXISTS `user`");
 			stat.executeUpdate("CREATE TABLE `user` (email TEXT, name TEXT, pw_hash TEXT);");
+			stat.executeUpdate("DROP TABLE IF EXISTS `pend_activations`");
+			stat.executeUpdate("CREATE TABLE `pend_activation` (email TEXT, hash TEXT);");
 			LOGGER.info("Database ready to be used!");
 			return true;
 		} catch (Exception e) {

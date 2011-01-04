@@ -66,4 +66,10 @@ public class Mail {
 		return false;
 	}
 
+	public boolean sendActivationEmail(String email) {
+		//TODO: meaningful message!
+		return sendMail(email, "Activate your plarity account", "TODO");
+
+	}
+
 }

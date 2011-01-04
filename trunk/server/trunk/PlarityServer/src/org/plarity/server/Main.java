@@ -104,7 +104,7 @@ public class Main {
 		mail = new Mail(mailServerHost, mailServerPort, mailAddress, mailUser, mailPassword);
 
 		//setting up user center
-		userCenter = new UserCenter(database, mail);
+		userCenter = new UserCenter(database);
 
 		//creating RESTful endpoint
 		final String baseUri = "http://localhost:" + severPort + "/";
