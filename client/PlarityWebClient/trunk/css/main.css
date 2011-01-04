@@ -1,0 +1,86 @@
+body {
+    margin:0;
+    font-family: Trebuchet, Verdana, sans-serif;
+    font-size:90%;
+}
+
+h1 {
+	font-size:350%;
+	margin-top: 0px;
+	display:block;
+	position:absolute;
+}
+
+a {
+    text-decoration: none;
+    color: #666666;
+}
+
+.header {
+    height: 110px;
+    background-color: #0070e3;
+    width: 100%;
+	color: #FFFFFF;
+	padding:0px;
+}
+
+.header_content {
+    width: 700px;
+	padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    background: transparent;
+}
+
+.login {
+	float:right;
+	margin-top:55px;
+	width: 250px;
+	height: 55px;
+	font-size: smaller;
+}
+
+.login .input_text {
+	width:90px;
+}
+
+.login .login_button {
+	position:inherit;
+}
+
+.login .sign_up {
+	margin-top: 4px;
+}
+
+.login .sign_up .link {
+	cursor: pointer;
+	text-decoration: underline;
+	font-weight: lighter;
+	color: #5ba6ff;
+}
+
+.content {
+    height: auto;
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    background: #FFFFFF;
+}
+
+.footer {
+    padding-top: 0.5em;
+    padding-bottom: 0.2em;
+    position:absolute;
+    bottom: 0px;
+    width:100%;
+    text-align:center;
+    font-size:90%;
+    height: 40px;
+    background: #DDDDDD;
+}
+
+.footer .validators {
+    padding-top: 0.3em;
+}
