@@ -14,7 +14,7 @@ function printHead () {
     <title>Plarity</title> 
     <script src="js/plarity.js" type="text/javascript"></script>  
     <script src="lib/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>  
-    <script src="lib/jqueryui/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>  
+    <script src="lib/jqueryui/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="lib/jqueryui/css/south-street/jquery-ui-1.8.7.custom.css" type="text/css" /> 
     <link rel="stylesheet" href="lib/sexybuttons/sexybuttons.css" type="text/css" />  
     <link rel="stylesheet" href="css/main.css" type="text/css" /> 
@@ -41,7 +41,7 @@ function printHeader () {
 			  		<td><button type="button" class="sexybutton sexysimple sexyteal sexysmall">Login</button></td>
 			  	</tr>
 			  	<tr>
-			  		<td><a href="#" onclick="openSignUp();">Sign up</a> for free!</td>
+			  		<td><a href="#" onclick="openSignUp();">Sign up for free!</a></td>
 			  		<td colspan="2"><a href="#" >Forgot your password?</a></td>
 			  	</tr>
 			</table>
