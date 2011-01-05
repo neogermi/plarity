@@ -4,27 +4,16 @@ body {
     font-size:90%;
 }
 
-h1 {
-	font-size:350%;
-	margin-top: 0px;
-	display:block;
-	position:absolute;
-}
-
 a {
     text-decoration: none;
-    color: #666666;
+    font-weight: lighter;
 }
 
-.header {
-    height: 110px;
-    background-color: #0070e3;
-    width: 100%;
-	color: #FFFFFF;
-	padding:0px;
-}
+/***********************/
+/****** wrapper ********/
+/***********************/
 
-.header_content {
+.wrapper {
     width: 700px;
 	padding: 0px;
     margin-left: auto;
@@ -32,44 +21,111 @@ a {
     background: transparent;
 }
 
-.login {
-	float:right;
-	margin-top:55px;
-	width: 250px;
-	height: 55px;
+/***********************/
+/****** header *********/
+/***********************/
+
+#header {
+    height: 110px;
+    background-color: #0070e3;
+    width: 100%;
+	color: #FFFFFF;
+	padding:0px;
+}
+
+#header a {
+	color: #5FC1CE;
+}
+
+#header h1 {
+	font-size: 5em;
+	padding: 0px;
+	margin: 0px;
+	display: inline;
+	text-shadow: #888888 3px 3px 5px;
+}
+
+#header #login {
+	float: right;
+	display: block;
 	font-size: smaller;
+	height:75px;
+	margin-top:40px;
 }
 
-.login .input_text {
-	width:90px;
+#header #login .input_text {
+	width:100px;
 }
 
-.login .login_button {
-	position:inherit;
+/***********************/
+/****** content ********/
+/***********************/
+
+#content {
+	background-color: #FFFFFF;
+	padding-top: 10px;
 }
 
-.login .sign_up {
-	margin-top: 4px;
+#content .wrapper {
+    width: 550px;
 }
 
-.login .sign_up .link {
-	cursor: pointer;
-	text-decoration: underline;
-	font-weight: lighter;
-	color: #5ba6ff;
+#content .pledge {
+	width: 100%;
+	margin: 15px 0px 15px 0px;
+	padding: 10px 15px 10px 5px;	
+	border: 1px solid #888888;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 }
 
-.content {
-    height: auto;
-    width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    background: #FFFFFF;
+#content .even {
+	background-color: #EEEEEE;
 }
 
-.footer {
+#content .left {
+	display: inline-block;
+	vertical-align: top;
+	width: 80px;
+	border-right: 1px solid #000000;
+	font-weight: bold;
+	font-size: 1.7em;
+	text-align: center;
+	color: #0070e3;
+}
+
+#content .right {
+	padding-left: 10px;
+	vertical-align: top;
+	text-align: center;
+}
+
+#content .text {
+	text-align: center;
+	font-weight: bold;
+}
+
+
+#content .resolution {
+	font-style: italic;
+}
+
+
+#content .donation {
+	font-weight: bold;
+}
+
+
+#content .charity {
+	display: block;
+	font-size: 2em;
+}
+
+/***********************/
+/****** footer *********/
+/***********************/
+
+#footer {
     padding-top: 0.5em;
     padding-bottom: 0.2em;
     position:absolute;
@@ -81,6 +137,10 @@ a {
     background: #DDDDDD;
 }
 
-.footer .validators {
+#footer a {
+	color: #888888;
+}
+
+#footer .validators {
     padding-top: 0.3em;
 }

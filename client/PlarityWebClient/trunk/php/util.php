@@ -11,10 +11,12 @@ function printHead () {
     <meta name="description" content="This page serves..." />  
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />  
     <meta http-equiv="content-language" content="en" /> 
-    <title>PledgeMe</title> 
-    <script src="js/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>  
-    <script src="js/jqueryui/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>  
-    <link rel="stylesheet" href="js/jqueryui/css/south-street/jquery-ui-1.8.7.custom.css" type="text/css" />  
+    <title>Plarity</title> 
+    <script src="js/plarity.js" type="text/javascript"></script>  
+    <script src="lib/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>  
+    <script src="lib/jqueryui/jquery-ui-1.8.7.custom.min.js" type="text/javascript"></script>  
+    <link rel="stylesheet" href="lib/jqueryui/css/south-street/jquery-ui-1.8.7.custom.css" type="text/css" /> 
+    <link rel="stylesheet" href="lib/sexybuttons/sexybuttons.css" type="text/css" />  
     <link rel="stylesheet" href="css/main.css" type="text/css" /> 
   </head>
 <?php
@@ -22,17 +24,31 @@ function printHead () {
 ?>
 
 <?php
-function insertLoginDiv () {
+function printHeader () {
 ?>
-  <span class="login">
-    <form>
-      Login<br />
-      <input type="email" class="input_text" placeholder="your@email.com"></input>
-      <input type="password" class="input_text" placeholder="your password"></input>
-      <input type="button" class="login_button" value="Login" />
-    </form>
-    <span class="sign_up">Click <span class="link">here</span> to sign up for free!</span>
- </span>
+    <div id="header">
+      <div class="wrapper">
+   	  	<h1 id="title">Plarity</h1>
+	    <span id="login">
+		  <form>
+		  	<table>
+		   		<tr>
+		  			<td colspan="3">Login</td>
+		  		</tr>
+			  	<tr>
+			  		<td><input type="email" class="input_text" placeholder="your@email.com" /></td>
+			  		<td><input type="password" class="input_text" placeholder="your password" /></td>
+			  		<td><button type="button" class="sexybutton sexysimple sexyteal sexysmall">Login</button></td>
+			  	</tr>
+			  	<tr>
+			  		<td><a href="#" onclick="openSignUp();">Sign up</a> for free!</td>
+			  		<td colspan="2"><a href="#" >Forgot your password?</a></td>
+			  	</tr>
+			</table>
+		  </form>
+		</span>
+      </div>
+    </div>
 <?php
 }
 ?>
@@ -40,9 +56,9 @@ function insertLoginDiv () {
 <?php
 function printFooter () {
 ?>
-    <div class="footer">
-      <div>
-        <a href="blog">Blog</a>&nbsp;&sdot;&nbsp;<a href="legal">Legal</a>&nbsp;&sdot;&nbsp;<a href="impressum">Impressum</a>&nbsp;&sdot;&nbsp;<a href="help">Hilfe</a>&nbsp;&sdot;&nbsp;<a href="jobs">Jobs</a>
+    <div id="footer">
+      <div id="links">
+        <a href="about">About</a>&nbsp;&sdot;&nbsp;<a href="blog">Blog</a>&nbsp;&sdot;&nbsp;<a href="legal">Legal</a>&nbsp;&sdot;&nbsp;<a href="impressum">Impressum</a>&nbsp;&sdot;&nbsp;<a href="help">Help</a>&nbsp;&sdot;&nbsp;<a href="jobs">Jobs</a>
       </div>
       <div class="validators">
         <a href="http://validator.w3.org/check?uri=referer">
