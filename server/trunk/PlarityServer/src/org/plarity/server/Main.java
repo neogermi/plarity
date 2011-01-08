@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.plarity.server.database.IDatabase;
 import org.plarity.server.database.SQLite;
 import org.plarity.server.mail.Mail;
+import org.plarity.server.pledge.PledgeCenter;
 import org.plarity.server.user.UserCenter;
 
 public class Main {
@@ -32,6 +33,7 @@ public class Main {
 	public static IDatabase database;
 	public static Mail mail;
 	public static UserCenter userCenter;
+	public static PledgeCenter pledgeCenter;
 
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -105,6 +107,9 @@ public class Main {
 
 		//setting up user center
 		userCenter = new UserCenter(database);
+
+		//setting up pledge center
+		pledgeCenter = new PledgeCenter(database);
 
 		//creating RESTful endpoint
 		final String baseUri = "http://localhost:" + severPort + "/";
