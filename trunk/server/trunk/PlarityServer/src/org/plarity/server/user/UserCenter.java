@@ -159,4 +159,14 @@ public class UserCenter {
 		//TODO
 	}
 
+	public String login(String email, String pwHash) {
+		// TODO Auto-generated method stub
+		return UUID.randomUUID().toString();
+	}
+
+	public boolean isLoggedIn(String userId, String sessionId) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }
