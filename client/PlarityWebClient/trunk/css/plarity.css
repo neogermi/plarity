@@ -2,6 +2,7 @@ body {
     margin:0;
     font-family: Trebuchet, Verdana, sans-serif;
     font-size:90%;
+	background-color: #F4F3E6;
 }
 
 a {
@@ -26,15 +27,15 @@ a {
 /***********************/
 
 #header {
-    height: 110px;
-    background-color: #0070e3;
+    height: 95px;
+    background-color: #609920; /*#0070e3;*/
     width: 100%;
 	color: #FFFFFF;
 	padding:0px;
 }
 
 #header a {
-	color: #5FC1CE;
+	color: #90B94A; /* #5FC1CE; */
 }
 
 #header h1 {
@@ -42,18 +43,25 @@ a {
 	padding: 0px;
 	margin: 0px;
 	display: inline;
-	text-shadow: #888888 3px 3px 5px;
+	text-shadow: #666666 3px 3px 5px;
+	cursor: pointer;
+	color: #F4F3E6;
 }
 
-#header #login {
+#login_register_field {
 	float: right;
 	display: block;
 	font-size: smaller;
-	height:75px;
-	margin-top:40px;
+	height:70px;
+	margin-top:30px;
+	width:300px;
 }
 
-#header #login .input_text {
+#login_register_field td {
+	padding: 0px 5px 0px 5px;
+}
+
+#login_register_field .input_text {
 	width:100px;
 }
 
@@ -62,21 +70,21 @@ a {
 /***********************/
 
 #content {
-	background-color: #FFFFFF;
 	padding-top: 10px;
 }
 
 #content .wrapper {
-    width: 550px;
+    width: 650px;
 }
 
 #content .pledge {
 	width: 100%;
 	margin: 15px 0px 15px 0px;
-	padding: 10px 15px 10px 5px;	
+	padding: 10px 5px 10px 5px;	
 	border: 1px solid #888888;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
+	background-color: #FFFFFF;
 }
 
 #content .even {
@@ -84,20 +92,30 @@ a {
 }
 
 #content .left {
-	display: inline-block;
-	vertical-align: top;
-	width: 80px;
-	border-right: 1px solid #000000;
+	display: table-cell;
+	vertical-align: center;
+	width: 100px;
 	font-weight: bold;
-	font-size: 1.7em;
+	font-size: 1.3em;
 	text-align: center;
-	color: #0070e3;
+	color: #609920;
+	border-right: 1px solid #000000;
+}
+
+#content .center {
+	vertical-align: top;
+	text-align: center;
 }
 
 #content .right {
-	padding-left: 10px;
-	vertical-align: top;
+	display: table-cell;
+	vertical-align: center;
+	width: 100px;
+	font-weight: bold;
+	font-size: 1.3em;
 	text-align: center;
+	color: #609920;
+	border-left: 1px solid #000000;
 }
 
 #content .text {
