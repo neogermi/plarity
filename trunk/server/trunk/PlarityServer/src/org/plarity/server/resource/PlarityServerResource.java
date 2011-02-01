@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
@@ -20,7 +21,8 @@ import org.plarity.server.Main;
 @Path("/")
 public class PlarityServerResource {
 
-	private final static Logger LOGGER = Logger.getLogger(PlarityServerResource.class.getName());
+	private final static Logger LOGGER = Logger
+			.getLogger(PlarityServerResource.class.getName());
 
 	@POST
 	@Consumes("application/json")
@@ -32,20 +34,22 @@ public class PlarityServerResource {
 			String email = data.getString("email");
 
 			if (Main.userCenter.askForActivation(email)) {
-				//send activation email!
+				// send activation email!
 				Main.mail.sendActivationEmail(email);
 				return Response.ok().build();
 			} else {
 				return Response.status(Status.CONFLICT).build();
 			}
 		} catch (JSONException e) {
-			String warning = "Could not register user, not enough data provided OR wrong JSON format: '" + content
-					+ "'";
+			String warning = "Could not register user, not enough data provided OR wrong JSON format: '"
+					+ content + "'";
 			LOGGER.log(Level.WARNING, warning);
-			return Response.status(Status.NOT_ACCEPTABLE).entity(warning).build();
+			return Response.status(Status.NOT_ACCEPTABLE).entity(warning)
+					.build();
 		} catch (Throwable t) {
 			t.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(t.getLocalizedMessage()).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(t.getLocalizedMessage()).build();
 		}
 	}
 
@@ -61,50 +65,78 @@ public class PlarityServerResource {
 
 			if (Main.userCenter.isValidActivation(email, hash)) {
 				if (!Main.userCenter.removeActivation(email)) {
-					LOGGER.log(Level.WARNING, "Could not remove activation of user('" + email + "'). Please check!");
+					LOGGER.log(Level.WARNING,
+							"Could not remove activation of user('" + email
+									+ "'). Please check!");
 				}
 				String tmpPw = Main.userCenter.initUser(email);
 				return Response.ok(tmpPw).build();
 			} else {
-				//invalid email/id combination
-				LOGGER.log(Level.WARNING, "Could not activate user, as '" + email + "'/'" + hash
-						+ "' (email/id) is not valid!");
+				// invalid email/id combination
+				LOGGER.log(Level.WARNING, "Could not activate user, as '"
+						+ email + "'/'" + hash + "' (email/id) is not valid!");
 				return Response.status(Status.FORBIDDEN).build();
 			}
 		} catch (Throwable t) {
-			String warning = "Could not register user, not enough data provided OR wrong JSON format: '" + content
-					+ "'";
+			String warning = "Could not register user, not enough data provided OR wrong JSON format: '"
+					+ content + "'";
 			LOGGER.log(Level.WARNING, warning, t);
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(t.getLocalizedMessage()).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(t.getLocalizedMessage()).build();
 		}
 	}
 
-	@POST
-	@Consumes("application/json")
+	@GET
 	@Produces("text/plain")
-	@Path("/login")
-	public Response loginUser(String content) {
+	@Path("/login/")
+	public Response loginUser(@Context UriInfo uriInfo) {
 		try {
-			LOGGER.info("Login of user!" + content);
-			JSONObject data = new JSONObject(content);
-			String email = data.getString("email");
-			String pwHash = data.getString("pwHash");
-
-			String sessionId = Main.userCenter.login(email, pwHash);
-
-			if (sessionId != null) {
-				return Response.ok(sessionId).build();
+			MultivaluedMap<String, String> queryParams = uriInfo
+					.getQueryParameters();
+			String task = queryParams.getFirst("task");
+			String email = queryParams.getFirst("email");
+			String hash = queryParams.getFirst("hash");
+			LOGGER.info("Login (task='" + task + "',email='" + email
+					+ "',hash='" + hash + "')!");
+			if (task == null || task.equals("")) {
+				LOGGER.log(Level.WARNING,
+						"No task {getseed,validate} provided!");
 			} else {
-				//invalid email/pw combination
-				LOGGER.log(Level.WARNING, "Could not login user, as '" + email + "'/'" + pwHash
-						+ "' (email/pwHash) is not valid!");
-				return Response.status(Status.FORBIDDEN).build();
+				if (task.equalsIgnoreCase("getseed") && email != null) {
+					return Response.ok(Main.userCenter.getSeed(email)).build();
+				} else if (task.equalsIgnoreCase("validate") && email != null
+						&& hash != null) {
+					String sessionId = Main.userCenter.login(email, hash);
+
+					if (sessionId != null) {
+						return Response.ok(sessionId).build();
+					} else {
+						// invalid email/hash combination
+						LOGGER.log(Level.WARNING, "Could not login user, as '"
+								+ email + "'/'" + hash
+								+ "' (email/pwHash) is not valid!");
+						return Response.status(Status.FORBIDDEN).build();
+					}
+				}
 			}
+			String warning = "Wrong login command: '" + uriInfo.getRequestUri()
+					+ "'";
+			LOGGER.log(Level.WARNING, warning);
+			return Response.status(Status.BAD_REQUEST).entity(warning).build();
 		} catch (Throwable t) {
-			String warning = "Could not login user, not enough data provided OR wrong JSON format: '" + content + "'";
+			String warning = "Could not login user, not enough data provided";
 			LOGGER.log(Level.WARNING, warning, t);
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(t.getLocalizedMessage()).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(t.getLocalizedMessage()).build();
 		}
+	}
+
+	@GET
+	@Produces("text/plain")
+	@Path("/logout/")
+	public Response logoutUser(@Context UriInfo uriInfo) {
+		// TODO
+		return Response.ok().build();
 	}
 
 	@POST
@@ -128,19 +160,23 @@ public class PlarityServerResource {
 				return Response.status(Status.UNAUTHORIZED).build();
 			}
 
-			String pledgeId = Main.pledgeCenter.createPledge(userId, pledgeText, endDate, penaltyAmount, currencyId,
-					charityId);
+			String pledgeId = Main.pledgeCenter.createPledge(userId,
+					pledgeText, endDate, penaltyAmount, currencyId, charityId);
 
 			if (pledgeId == null) {
 				return Response.status(Status.BAD_REQUEST).build();
 			} else {
-				return Response.created(ui.getBaseUriBuilder().path("pledge").path(pledgeId).build()).build();
+				return Response.created(
+						ui.getBaseUriBuilder().path("pledge").path(pledgeId)
+								.build()).build();
 			}
 
 		} catch (Throwable t) {
-			String warning = "Could not login user, not enough data provided OR wrong JSON format: '" + content + "'";
+			String warning = "Could not login user, not enough data provided OR wrong JSON format: '"
+					+ content + "'";
 			LOGGER.log(Level.WARNING, warning, t);
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(t.getLocalizedMessage()).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.entity(t.getLocalizedMessage()).build();
 		}
 	}
 
